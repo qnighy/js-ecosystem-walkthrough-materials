@@ -97,6 +97,7 @@ const extractorIterator = (
     };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       respondNext!({ done: true, value: undefined });
     }
   });
@@ -106,6 +107,7 @@ const extractorIterator = (
     };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       respondNext!(undefined, error);
     }
   });
@@ -162,7 +164,8 @@ const extractorIterator = (
           throw new Error("package.json is a non-object");
         }
       } else {
-        for await (const _ of strm) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _chunk of strm) {
           // Drop all chunks
         }
       }
