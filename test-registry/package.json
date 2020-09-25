@@ -8,7 +8,9 @@
     "build": "tsc",
     "serve": "node dist/index.js",
     "serve:dev": "ts-node src/index.ts",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "fmt": "prettier -w src/**/*.ts",
+    "fmt:check": "prettier -c src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Masaki Hara",
