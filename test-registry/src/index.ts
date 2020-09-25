@@ -1,9 +1,9 @@
-import fs = require('fs');
-import express = require('express');
-import stream = require('stream');
-import zlib = require('zlib');
-import tar = require('tar-stream');
-import validate = require('validate-npm-package-name');
+import fs = require("fs");
+import express = require("express");
+import stream = require("stream");
+import zlib = require("zlib");
+import tar = require("tar-stream");
+import validate = require("validate-npm-package-name");
 
 interface PackageJson {
   name: string,
@@ -77,21 +77,21 @@ type Index = { [name: string]: Package };
 const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, stream.PassThrough]> => {
   let requestNext: () => void = () => {};
   const respondNexts: ((entry: IteratorResult<[tar.Headers, stream.PassThrough]> | undefined, err?: unknown) => void)[] = [];
-  extract.on('entry', (headers, strm, next) => {
+  extract.on("entry", (headers, strm, next) => {
     requestNext = next;
     const respondNext = respondNexts.shift();
     if (respondNext) {
       respondNext({ value: [headers, strm] });
     }
   });
-  extract.on('finish', () => {
+  extract.on("finish", () => {
     requestNext = () => { throw new Error("no entry anymore"); };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
       respondNext!({ done: true, value: undefined });
     }
   });
-  extract.on('error', (error: unknown) => {
+  extract.on("error", (error: unknown) => {
     requestNext = () => { throw new Error("no entry anymore"); };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
@@ -140,10 +140,10 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
         }
         const package_json_str = Buffer.concat(chunks).toString("utf8");
         const package_json_: unknown = JSON.parse(package_json_str);
-        if (typeof(package_json_) === 'object' && package_json_ != null) {
+        if (typeof(package_json_) === "object" && package_json_ != null) {
           packageJson = package_json_ as PackageJson;
         } else {
-          throw new Error('package.json is a non-object');
+          throw new Error("package.json is a non-object");
         }
       } else {
         for await (const _ of strm) {}
@@ -169,17 +169,17 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
   }
 
   const app = express();
-  const port = parseInt(process.env.TEST_REGISTRY_PORT || '8765');
+  const port = parseInt(process.env.TEST_REGISTRY_PORT || "8765");
 
-  app.use('/', express.static(packagesDir));
-  app.get('/:packageName', (req, res, next) => {
+  app.use("/", express.static(packagesDir));
+  app.get("/:packageName", (req, res, next) => {
     const packageName = req.params.packageName;
     if (!validate(packageName).validForNewPackages) {
-      return next('router');
+      return next("router");
     }
     if (!index[packageName]) {
       console.info(`No package: ${packageName}`);
-      return next('router');
+      return next("router");
     }
     const packageData = index[packageName];
     res.json(packageData);
