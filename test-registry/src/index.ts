@@ -46,7 +46,7 @@ interface PackageVersion extends PackageJson {
     name: string;
     email: string;
   };
-  directories?: {};
+  // directories?: {};
   _hasShrinkwrap?: false;
 }
 
@@ -74,9 +74,16 @@ interface Package {
 
 type Index = { [name: string]: Package };
 
-const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, stream.PassThrough]> => {
-  let requestNext: () => void = () => {};
-  const respondNexts: ((entry: IteratorResult<[tar.Headers, stream.PassThrough]> | undefined, err?: unknown) => void)[] = [];
+const extractorIterator = (
+  extract: tar.Extract
+): AsyncIterable<[tar.Headers, stream.PassThrough]> => {
+  let requestNext: () => void = () => {
+    // Do nothing
+  };
+  const respondNexts: ((
+    entry: IteratorResult<[tar.Headers, stream.PassThrough]> | undefined,
+    err?: unknown
+  ) => void)[] = [];
   extract.on("entry", (headers, strm, next) => {
     requestNext = next;
     const respondNext = respondNexts.shift();
@@ -85,36 +92,40 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
     }
   });
   extract.on("finish", () => {
-    requestNext = () => { throw new Error("no entry anymore"); };
+    requestNext = () => {
+      throw new Error("no entry anymore");
+    };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
       respondNext!({ done: true, value: undefined });
     }
   });
   extract.on("error", (error: unknown) => {
-    requestNext = () => { throw new Error("no entry anymore"); };
+    requestNext = () => {
+      throw new Error("no entry anymore");
+    };
     while (respondNexts.length > 0) {
       const respondNext = respondNexts.shift();
       respondNext!(undefined, error);
     }
-  })
+  });
   const iter: AsyncIterator<[tar.Headers, stream.PassThrough]> = {
     next(): Promise<IteratorResult<[tar.Headers, stream.PassThrough]>> {
       return new Promise((resolve, reject) => {
         respondNexts.push((entry, err) => {
-          if(entry) resolve(entry);
+          if (entry) resolve(entry);
           else reject(err);
         });
         requestNext();
       });
-    }
+    },
   };
 
   return {
     [Symbol.asyncIterator](): AsyncIterator<[tar.Headers, stream.PassThrough]> {
       return iter;
-    }
-  }
+    },
+  };
 };
 
 (async () => {
@@ -130,8 +141,13 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
     let packageJson: PackageJson | undefined;
 
     const extract = tar.extract();
-    const iter: AsyncIterable<[tar.Headers, stream.PassThrough]> = extractorIterator(extract);
-    fs.createReadStream(`${packagesDir}/${filename}`).pipe(zlib.createGunzip()).pipe(extract);
+    const iter: AsyncIterable<[
+      tar.Headers,
+      stream.PassThrough
+    ]> = extractorIterator(extract);
+    fs.createReadStream(`${packagesDir}/${filename}`)
+      .pipe(zlib.createGunzip())
+      .pipe(extract);
     for await (const [header, strm] of iter) {
       if (header.name === "package/package.json") {
         const chunks: Buffer[] = [];
@@ -140,13 +156,15 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
         }
         const package_json_str = Buffer.concat(chunks).toString("utf8");
         const package_json_: unknown = JSON.parse(package_json_str);
-        if (typeof(package_json_) === "object" && package_json_ != null) {
+        if (typeof package_json_ === "object" && package_json_ != null) {
           packageJson = package_json_ as PackageJson;
         } else {
           throw new Error("package.json is a non-object");
         }
       } else {
-        for await (const _ of strm) {}
+        for await (const _ of strm) {
+          // Drop all chunks
+        }
       }
     }
 
@@ -164,8 +182,8 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
       _id: `${packageJson.name}@${packageJson.version}`,
       dist: {
         tarball: filename,
-      }
-    }
+      },
+    };
   }
 
   const app = express();
@@ -183,7 +201,7 @@ const extractorIterator = (extract: tar.Extract): AsyncIterable<[tar.Headers, st
     }
     const packageData = index[packageName];
     res.json(packageData);
-  })
+  });
 
   app.listen(port, () => {
     console.log(`Test registry listening at http://localhost:${port}`);
