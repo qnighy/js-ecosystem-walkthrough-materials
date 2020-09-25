@@ -4,6 +4,7 @@ import stream = require("stream");
 import zlib = require("zlib");
 import tar = require("tar-stream");
 import validate = require("validate-npm-package-name");
+import yargs = require("yargs");
 
 interface PackageJson {
   name: string;
@@ -133,8 +134,9 @@ const extractorIterator = (
 (async () => {
   const index: Index = {};
 
-  const packagesDir = "./packages";
+  const packagesDir = yargs.argv._[0] || "./packages";
 
+  console.log(`Searching for *.tgz files in ${packagesDir}`);
   for (const filename of await fs.promises.readdir(packagesDir)) {
     if (!filename.match(/\.tgz$/m)) {
       continue;
@@ -187,6 +189,9 @@ const extractorIterator = (
         tarball: filename,
       },
     };
+    console.log(
+      `Found ${packageJson.name}@${packageJson.version} (${packagesDir}/${filename})`
+    );
   }
 
   const app = express();
