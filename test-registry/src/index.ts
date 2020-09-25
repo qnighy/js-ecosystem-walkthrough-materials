@@ -6,70 +6,70 @@ import tar = require("tar-stream");
 import validate = require("validate-npm-package-name");
 
 interface PackageJson {
-  name: string,
-  version: string,
-  description?: string,
-  private?: boolean,
-  files?: string[],
-  scripts: { [script: string]: string },
-  keywords?: string[],
-  author?: string,
-  license?: string,
-  repository?: { type: "git", url: string },
-  dependencies?: { [name: string]: string },
-  devDependencies?: { [name: string]: string },
-  optionalDependencies?: { [name: string]: string },
-  peerDependencies?: { [name: string]: string },
-  bundledDependencies?: { [name: string]: string },
+  name: string;
+  version: string;
+  description?: string;
+  private?: boolean;
+  files?: string[];
+  scripts: { [script: string]: string };
+  keywords?: string[];
+  author?: string;
+  license?: string;
+  repository?: { type: "git"; url: string };
+  dependencies?: { [name: string]: string };
+  devDependencies?: { [name: string]: string };
+  optionalDependencies?: { [name: string]: string };
+  peerDependencies?: { [name: string]: string };
+  bundledDependencies?: { [name: string]: string };
 }
 
 interface PackageVersion extends PackageJson {
-  gitHead?: string,
-  bugs?: { url: string },
-  homepage?: string,
-  _id?: string,
-  _nodeVersion?: string,
-  _npmVersion?: string,
+  gitHead?: string;
+  bugs?: { url: string };
+  homepage?: string;
+  _id?: string;
+  _nodeVersion?: string;
+  _npmVersion?: string;
   dist?: {
-    integrity?: string,
-    shasum?: string,
-    tarball?: string,
-    fileCount?: number,
-    unpackedSize?: number,
-    "npm-signature"?: string
-  },
+    integrity?: string;
+    shasum?: string;
+    tarball?: string;
+    fileCount?: number;
+    unpackedSize?: number;
+    "npm-signature"?: string;
+  };
   maintainers?: {
-    email: string,
-    name: string
-  }[],
+    email: string;
+    name: string;
+  }[];
   _npmUser?: {
-    name: string,
-    email: string
-  },
-  directories?: {},
-  _hasShrinkwrap?: false
+    name: string;
+    email: string;
+  };
+  directories?: {};
+  _hasShrinkwrap?: false;
 }
 
 interface Package {
-  _id: string,
-  _rev?: string,
-  name: string,
-  description?: string,
-  "dist-tags"?: { [key: string]: string },
-  versions: { [version: string]: PackageVersion },
-  readme?: string,
+  _id: string;
+  _rev?: string;
+  name: string;
+  description?: string;
+  "dist-tags"?: { [key: string]: string };
+  versions: { [version: string]: PackageVersion };
+  readme?: string;
   maintainers?: {
-    email: string,
-    name: string
-  }[],
-  time?: { [key: string]: string },
-  users?: { [key: string]: boolean },
-  readmeFilename?: string,
-  keywords?: string[],
-  repository?: { type: string, url?: string },
-  bugs?: { url: string },
-  license?: string,
-  homepage?: string,
+    email: string;
+    name: string;
+  }[];
+  time?: { [key: string]: string };
+  users?: { [key: string]: boolean };
+  readmeFilename?: string;
+  keywords?: string[];
+  repository?: { type: string; url?: string };
+  bugs?: { url: string };
+  license?: string;
+  homepage?: string;
 }
 
 type Index = { [name: string]: Package };
