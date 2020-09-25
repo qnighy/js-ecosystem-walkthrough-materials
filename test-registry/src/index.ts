@@ -1,30 +1,10 @@
 import fs = require("fs");
 import express = require("express");
-import stream = require("stream");
-import zlib = require("zlib");
-import tar = require("tar-stream");
 import validate = require("validate-npm-package-name");
 import yargs = require("yargs");
+import packageJsons = require("./package-jsons");
 
-interface PackageJson {
-  name: string;
-  version: string;
-  description?: string;
-  private?: boolean;
-  files?: string[];
-  scripts: { [script: string]: string };
-  keywords?: string[];
-  author?: string;
-  license?: string;
-  repository?: { type: "git"; url: string };
-  dependencies?: { [name: string]: string };
-  devDependencies?: { [name: string]: string };
-  optionalDependencies?: { [name: string]: string };
-  peerDependencies?: { [name: string]: string };
-  bundledDependencies?: { [name: string]: string };
-}
-
-interface PackageVersion extends PackageJson {
+interface PackageVersion extends packageJsons.PackageJson {
   gitHead?: string;
   bugs?: { url: string };
   homepage?: string;
@@ -75,62 +55,6 @@ interface Package {
 
 type Index = { [name: string]: Package };
 
-const extractorIterator = (
-  extract: tar.Extract
-): AsyncIterable<[tar.Headers, stream.PassThrough]> => {
-  let requestNext: () => void = () => {
-    // Do nothing
-  };
-  const respondNexts: ((
-    entry: IteratorResult<[tar.Headers, stream.PassThrough]> | undefined,
-    err?: unknown
-  ) => void)[] = [];
-  extract.on("entry", (headers, strm, next) => {
-    requestNext = next;
-    const respondNext = respondNexts.shift();
-    if (respondNext) {
-      respondNext({ value: [headers, strm] });
-    }
-  });
-  extract.on("finish", () => {
-    requestNext = () => {
-      throw new Error("no entry anymore");
-    };
-    while (respondNexts.length > 0) {
-      const respondNext = respondNexts.shift();
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      respondNext!({ done: true, value: undefined });
-    }
-  });
-  extract.on("error", (error: unknown) => {
-    requestNext = () => {
-      throw new Error("no entry anymore");
-    };
-    while (respondNexts.length > 0) {
-      const respondNext = respondNexts.shift();
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      respondNext!(undefined, error);
-    }
-  });
-  const iter: AsyncIterator<[tar.Headers, stream.PassThrough]> = {
-    next(): Promise<IteratorResult<[tar.Headers, stream.PassThrough]>> {
-      return new Promise((resolve, reject) => {
-        respondNexts.push((entry, err) => {
-          if (entry) resolve(entry);
-          else reject(err);
-        });
-        requestNext();
-      });
-    },
-  };
-
-  return {
-    [Symbol.asyncIterator](): AsyncIterator<[tar.Headers, stream.PassThrough]> {
-      return iter;
-    },
-  };
-};
-
 (async () => {
   const index: Index = {};
 
@@ -142,41 +66,16 @@ const extractorIterator = (
       continue;
     }
 
-    let packageJson: PackageJson | undefined;
-
-    const extract = tar.extract();
-    const iter: AsyncIterable<[
-      tar.Headers,
-      stream.PassThrough
-    ]> = extractorIterator(extract);
-    fs.createReadStream(`${packagesDir}/${filename}`)
-      .pipe(zlib.createGunzip())
-      .pipe(extract);
-    for await (const [header, strm] of iter) {
-      if (header.name === "package/package.json") {
-        const chunks: Buffer[] = [];
-        for await (const chunk of strm) {
-          chunks.push(chunk);
-        }
-        const package_json_str = Buffer.concat(chunks).toString("utf8");
-        const package_json_: unknown = JSON.parse(package_json_str);
-        if (typeof package_json_ === "object" && package_json_ != null) {
-          packageJson = package_json_ as PackageJson;
-        } else {
-          throw new Error("package.json is a non-object");
-        }
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for await (const _chunk of strm) {
-          // Drop all chunks
-        }
-      }
-    }
-
-    if (packageJson === undefined) {
-      console.error(`${filename}: no package.json found`);
+    let packageJson: packageJsons.PackageJson;
+    try {
+      packageJson = await packageJsons.extractPackageJson(
+        `${packagesDir}/${filename}`
+      );
+    } catch (e: unknown) {
+      console.error(e);
       continue;
     }
+
     index[packageJson.name] ||= {
       _id: packageJson.name,
       name: packageJson.name,
