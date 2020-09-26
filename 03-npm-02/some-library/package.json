@@ -1,0 +1,4 @@
+{
+  "name": "some-library",
+  "main": "./dist/index.js"
+}

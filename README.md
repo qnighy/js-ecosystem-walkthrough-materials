@@ -14,4 +14,7 @@ This is a collection of materials for the [JavaScript ecosystem walkthrough](htt
   - 02-nodejs-04: the main module
   - 02-nodejs-05: module identity: different (but equivalent) modules
   - 02-nodejs-06: module identity: the equal module
+- 03-npm-01: `package.json` in Node.js
+- 03-npm-02: `package.json` and relative import
+- 03-npm-03: in-package imports
 - test-registry: a registry application for testing npm/yarn behaviors
