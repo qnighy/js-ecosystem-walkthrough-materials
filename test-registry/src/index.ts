@@ -1,6 +1,8 @@
 import fs = require("fs");
+import crypto = require("crypto");
 import express = require("express");
 import validate = require("validate-npm-package-name");
+import semver = require("semver");
 import yargs = require("yargs");
 import packageJsons = require("./package-jsons");
 
@@ -36,7 +38,10 @@ interface Package {
   _rev?: string;
   name: string;
   description?: string;
-  "dist-tags"?: { [key: string]: string };
+  "dist-tags": {
+    latest: string;
+    [key: string]: string;
+  };
   versions: { [version: string]: PackageVersion };
   readme?: string;
   maintainers?: {
@@ -55,6 +60,8 @@ interface Package {
 
 type Index = { [name: string]: Package };
 
+const port = parseInt(process.env.TEST_REGISTRY_PORT || "8765");
+
 (async () => {
   const index: Index = {};
 
@@ -65,36 +72,51 @@ type Index = { [name: string]: Package };
     if (!filename.match(/\.tgz$/m)) {
       continue;
     }
+    const path = `${packagesDir}/${filename}`;
 
     let packageJson: packageJsons.PackageJson;
     try {
-      packageJson = await packageJsons.extractPackageJson(
-        `${packagesDir}/${filename}`
-      );
+      packageJson = await packageJsons.extractPackageJson(path);
     } catch (e: unknown) {
       console.error(e);
       continue;
+    }
+
+    const shasum = crypto.createHash("sha1");
+    for await (const chunk of fs.createReadStream(path)) {
+      shasum.update(chunk);
     }
 
     index[packageJson.name] ||= {
       _id: packageJson.name,
       name: packageJson.name,
       versions: {},
+      "dist-tags": {
+        latest: packageJson.version,
+      },
     };
     index[packageJson.name].versions[packageJson.version] = {
       ...packageJson,
       _id: `${packageJson.name}@${packageJson.version}`,
       dist: {
-        tarball: filename,
+        tarball: `http://localhost:${port}/${filename}`,
+        shasum: shasum.digest("hex"),
       },
     };
+    if (
+      semver.lt(
+        index[packageJson.name]["dist-tags"].latest,
+        packageJson.version
+      )
+    ) {
+      index[packageJson.name]["dist-tags"].latest = packageJson.version;
+    }
     console.log(
       `Found ${packageJson.name}@${packageJson.version} (${packagesDir}/${filename})`
     );
   }
 
   const app = express();
-  const port = parseInt(process.env.TEST_REGISTRY_PORT || "8765");
 
   app.use("/", express.static(packagesDir));
   app.get("/:packageName", (req, res, next) => {
