@@ -19,4 +19,5 @@ This is a collection of materials for the [JavaScript ecosystem walkthrough](htt
   - 03-npm-02: `package.json` and relative import
   - 03-npm-03: in-package imports
   - 03-npm-04: symlinks and module identity
+  - 03-npm-05: dependency resolution: multiple versions and hoisting
 - test-registry: a registry application for testing npm/yarn behaviors

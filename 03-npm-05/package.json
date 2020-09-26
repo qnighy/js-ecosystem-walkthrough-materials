@@ -1,0 +1,12 @@
+{
+  "name": "main",
+  "dependencies": {
+    "@test/foo1": "^1.0.0",
+    "@test/foo2": "^1.0.0",
+    "@test/foo3": "^1.0.0",
+    "@test/foo4": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
