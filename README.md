@@ -20,5 +20,6 @@ This is a collection of materials for the [JavaScript ecosystem walkthrough](htt
   - 03-npm-03: in-package imports
   - 03-npm-04: symlinks and module identity
   - 03-npm-05: dependency resolution: multiple versions and hoisting
+  - 03-npm-06: dependency resolution: hoisting dependencies of indirect dependencies
   - 03-npm-07: dependency resolution: peerDependencies
 - test-registry: a registry application for testing npm/yarn behaviors
