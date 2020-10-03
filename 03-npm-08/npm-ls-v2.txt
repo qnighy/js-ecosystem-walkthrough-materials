@@ -1,0 +1,11 @@
+main@1.0.0
+├── @test/framework1@2.0.0 peer invalid
+└── @test/plugin1@1.0.0
+
+npm ERR! peer invalid: @test/framework1@2.0.0 ./node_modules/@test/framework1
+node_modules
+└── @test
+    ├── framework1
+    └── plugin1
+
+3 directories

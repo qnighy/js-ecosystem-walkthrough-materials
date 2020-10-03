@@ -22,4 +22,5 @@ This is a collection of materials for the [JavaScript ecosystem walkthrough](htt
   - 03-npm-05: dependency resolution: multiple versions and hoisting
   - 03-npm-06: dependency resolution: hoisting dependencies of indirect dependencies
   - 03-npm-07: dependency resolution: peerDependencies
+  - 03-npm-08: dependency resolution: invalid peerDependencies versions
 - test-registry: a registry application for testing npm/yarn behaviors

@@ -1,0 +1,11 @@
+main@1.0.0
+├── UNMET PEER DEPENDENCY @test/framework1@2.0.0
+└── @test/plugin1@1.0.0
+
+npm ERR! peer dep missing: @test/framework1@^1.0.0, required by @test/plugin1@1.0.0
+node_modules
+└── @test
+    ├── framework1
+    └── plugin1
+
+3 directories
