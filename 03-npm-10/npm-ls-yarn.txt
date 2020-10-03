@@ -1,0 +1,18 @@
+main@1.0.0
+├─┬ @test/intermediate1@1.0.0
+│ └── @test/framework1@2.0.0 invalid
+└─┬ @test/plugin1@1.0.0
+  └── @test/framework1@2.0.0 deduped invalid
+
+npm ERR! code ELSPROBLEMS
+npm ERR! invalid: @test/framework1@2.0.0 ./node_modules/@test/framework1
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     ~/.npm/_logs/debug.log
+node_modules
+└── @test
+    ├── framework1
+    ├── intermediate1
+    └── plugin1
+
+4 directories

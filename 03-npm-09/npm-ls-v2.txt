@@ -1,0 +1,16 @@
+main@1.0.0
+├── @test/framework1@1.0.0
+├─┬ @test/intermediate1@1.0.0
+│ └── @test/framework1@1.0.0
+└── @test/plugin1@1.0.0
+
+node_modules
+└── @test
+    ├── framework1
+    ├── intermediate1
+    │   └── node_modules
+    │       └── @test
+    │           └── framework1
+    └── plugin1
+
+7 directories
