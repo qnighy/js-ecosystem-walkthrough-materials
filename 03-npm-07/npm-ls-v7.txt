@@ -1,0 +1,13 @@
+main@1.0.0
+├── @test/framework1@1.0.0
+└─┬ @test/plugin1@1.0.0
+  ├── @test/framework1@1.0.0 deduped
+  └── @test/framework2@1.0.0
+
+node_modules
+└── @test
+    ├── framework1
+    ├── framework2
+    └── plugin1
+
+4 directories

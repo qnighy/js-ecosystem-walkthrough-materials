@@ -1,0 +1,30 @@
+main@
+├─┬ @test/foo1@1.0.0
+│ └── @test/bar@1.0.0
+├─┬ @test/foo2@1.0.0
+│ └── @test/bar@1.0.0
+├─┬ @test/foo3@1.0.0
+│ └── @test/bar@2.0.0
+└─┬ @test/foo4@1.0.0
+  └── @test/bar@2.0.0
+
+node_modules
+└── @test
+    ├── foo1
+    │   └── node_modules
+    │       └── @test
+    │           └── bar
+    ├── foo2
+    │   └── node_modules
+    │       └── @test
+    │           └── bar
+    ├── foo3
+    │   └── node_modules
+    │       └── @test
+    │           └── bar
+    └── foo4
+        └── node_modules
+            └── @test
+                └── bar
+
+17 directories

@@ -1,0 +1,17 @@
+main@1.0.0
+├── @test/framework1@1.0.0
+└─┬ @test/plugin1@1.0.0
+  ├── @test/framework1@1.0.0 deduped
+  └── UNMET DEPENDENCY @test/framework2@^1.0.0
+
+npm ERR! code ELSPROBLEMS
+npm ERR! missing: @test/framework2@^1.0.0, required by @test/plugin1@1.0.0
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     ~/.npm/_logs/debug.log
+node_modules
+└── @test
+    ├── framework1
+    └── plugin1
+
+3 directories
