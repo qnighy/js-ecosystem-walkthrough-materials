@@ -132,6 +132,15 @@ const port = parseInt(process.env.TEST_REGISTRY_PORT || "8765");
     res.json(packageData);
   });
 
+  app.put("/:packageName", (req, res, next) => {
+    const packageName = req.params.packageName;
+    if (!validate(packageName).validForNewPackages) {
+      return next("router");
+    }
+    console.warn(`Requested publishing ${packageName} (ignoring)`);
+    res.json({});
+  });
+
   app.listen(port, () => {
     console.log(`Test registry listening at http://localhost:${port}`);
   });
