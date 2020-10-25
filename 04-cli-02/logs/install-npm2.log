@@ -1,0 +1,10 @@
+@test/main: preinstall at $PWD
+@test/foo1: preinstall at $PWD/node_modules/@test/foo1
+@test/gitdep: preinstall at $PWD/node_modules/@test/gitdep
+@test/foo1: install at $PWD/node_modules/@test/foo1
+@test/gitdep: install at $PWD/node_modules/@test/gitdep
+@test/foo1: postinstall at $PWD/node_modules/@test/foo1
+@test/gitdep: postinstall at $PWD/node_modules/@test/gitdep
+@test/main: install at $PWD (with dev deps)
+@test/main: postinstall at $PWD (with dev deps)
+@test/main: prepublish at $PWD (with dev deps)

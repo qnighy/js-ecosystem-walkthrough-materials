@@ -1,0 +1,23 @@
+@test/gitdep: preinstall at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: install at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: postinstall at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: prepublish at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: prepare at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: prepare at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: preinstall at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/gitdep: install at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/gitdep: postinstall at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/gitdep: prepublish at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/gitdep: prepare at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/gitdep: prepare at ~/.npm/_cacache/tmp/git-clone-YYYYYYYY
+@test/foo1: preinstall at $PWD/node_modules/@test/foo1
+@test/gitdep: preinstall at $PWD/node_modules/@test/gitdep
+@test/foo1: install at $PWD/node_modules/@test/foo1
+@test/gitdep: install at $PWD/node_modules/@test/gitdep
+@test/gitdep: postinstall at $PWD/node_modules/@test/gitdep
+@test/foo1: postinstall at $PWD/node_modules/@test/foo1
+@test/main: preinstall at $PWD (with dev deps)
+@test/main: install at $PWD (with dev deps)
+@test/main: postinstall at $PWD (with dev deps)
+@test/main: prepublish at $PWD (with dev deps)
+@test/main: prepare at $PWD (with dev deps)

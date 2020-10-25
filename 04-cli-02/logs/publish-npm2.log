@@ -1,0 +1,3 @@
+@test/main: prepublish at $PWD (with dev deps)
+@test/main: publish at $PWD (with dev deps)
+@test/main: postpublish at $PWD (with dev deps)

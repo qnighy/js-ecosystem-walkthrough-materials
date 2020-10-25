@@ -1,0 +1,53 @@
+{
+  "name": "@test/main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "node script.js",
+    "prepare": "node script.js",
+    "prepublishOnly": "node script.js",
+    "prepack": "node script.js",
+    "postpack": "node script.js",
+    "publish": "node script.js",
+    "postpublish": "node script.js",
+    "preinstall": "node script.js",
+    "install": "node script.js",
+    "postinstall": "node script.js",
+    "preuninstall": "node script.js",
+    "uninstall": "node script.js",
+    "postuninstall": "node script.js",
+    "preversion": "node script.js",
+    "version": "node script.js",
+    "postversion": "node script.js",
+    "pretest": "node script.js",
+    "test": "node script.js",
+    "posttest": "node script.js",
+    "prestop": "node script.js",
+    "stop": "node script.js",
+    "poststop": "node script.js",
+    "prestart": "node script.js",
+    "start": "node script.js",
+    "poststart": "node script.js",
+    "prerestart": "node script.js",
+    "restart": "node script.js",
+    "postrestart": "node script.js",
+    "preshrinkwrap": "node script.js",
+    "shrinkwrap": "node script.js",
+    "postshrinkwrap": "node script.js",
+    "prepremyscript": "node script.js",
+    "premyscript": "node script.js",
+    "myscript": "node script.js",
+    "postmyscript": "node script.js",
+    "echo": "echo"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@test/foo1": "^1.0.0",
+    "@test/gitdep": "qnighy/js-ecosystem-walkthrough-git-example#2d5772281f278d243a9c9a31142b784ed443c071"
+  },
+  "devDependencies": {
+    "@test/devtool1": "^1.0.0"
+  }
+}

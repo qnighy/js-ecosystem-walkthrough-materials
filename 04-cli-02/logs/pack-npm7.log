@@ -1,0 +1,3 @@
+@test/main: prepack at $PWD (with dev deps)
+@test/main: prepare at $PWD (with dev deps)
+@test/main: postpack at $PWD (with dev deps)

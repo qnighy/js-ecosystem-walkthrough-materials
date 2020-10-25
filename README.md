@@ -25,4 +25,8 @@ This is a collection of materials for the [JavaScript ecosystem walkthrough](htt
   - 03-npm-08: dependency resolution: invalid peerDependencies versions
   - 03-npm-09: dependency resolution: peerDependencies and hoisted dependencies (valid version)
   - 03-npm-10: dependency resolution: peerDependencies and hoisted dependencies (invalid version)
+- 04-npm: materials for "(4) npm and command line"
+  - 04-npm-01: `node_modules/.bin` and indirect dependencies
+  - 04-npm-02: lifecycle scripts
+  - 04-npm-03: `npm link`
 - test-registry: a registry application for testing npm/yarn behaviors

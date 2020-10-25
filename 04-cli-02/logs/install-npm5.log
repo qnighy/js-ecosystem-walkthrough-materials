@@ -1,0 +1,20 @@
+@test/main: preinstall at $PWD
+@test/gitdep: preinstall at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX
+@test/gitdep: install at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX (with dev deps)
+@test/gitdep: postinstall at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX (with dev deps)
+@test/gitdep: prepare at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX (with dev deps)
+@test/gitdep: prepack at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX (with dev deps)
+@test/gitdep: postpack at ~/.npm/_cacache/tmp/git-clone-XXXXXXXX (with dev deps)
+@test/foo1: preinstall at $PWD/node_modules/@test/foo1
+@test/gitdep: preinstall at $PWD/node_modules/@test/gitdep
+@test/foo1: install at $PWD/node_modules/@test/foo1
+@test/gitdep: install at $PWD/node_modules/@test/gitdep
+@test/foo1: postinstall at $PWD/node_modules/@test/foo1
+@test/gitdep: postinstall at $PWD/node_modules/@test/gitdep
+@test/main: install at $PWD (with dev deps)
+@test/main: postinstall at $PWD (with dev deps)
+@test/main: prepublish at $PWD (with dev deps)
+@test/main: prepare at $PWD (with dev deps)
+@test/main: preshrinkwrap at $PWD (with dev deps)
+@test/main: shrinkwrap at $PWD (with dev deps)
+@test/main: postshrinkwrap at $PWD (with dev deps)
